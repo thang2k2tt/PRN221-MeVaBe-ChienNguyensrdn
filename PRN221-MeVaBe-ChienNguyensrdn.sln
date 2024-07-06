@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PRN221-MeVaBe-WebClient-Use
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PRN221-MeVaBe-WebClient-Admin", "PRN221-MeVaBe-WebClient-Admin\PRN221-MeVaBe-WebClient-Admin.csproj", "{3B001333-B272-4ADB-849F-FEA1F3E825A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{C4133097-D019-43E2-AEC9-ABC8AEEB6E60}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{3B001333-B272-4ADB-849F-FEA1F3E825A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B001333-B272-4ADB-849F-FEA1F3E825A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B001333-B272-4ADB-849F-FEA1F3E825A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4133097-D019-43E2-AEC9-ABC8AEEB6E60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4133097-D019-43E2-AEC9-ABC8AEEB6E60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4133097-D019-43E2-AEC9-ABC8AEEB6E60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4133097-D019-43E2-AEC9-ABC8AEEB6E60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
