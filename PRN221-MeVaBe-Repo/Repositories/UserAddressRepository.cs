@@ -44,6 +44,10 @@ namespace PRN221_MeVaBe_Repo.Repositories
             return await _context.TblUserAddresses.FirstOrDefaultAsync(sc => sc.Id == id);
         }
 
+        public async Task<UserAddress> GetUserAddressByUserId(int userId)
+        {
+            return await _context.TblUserAddresses.FirstOrDefaultAsync(sc => sc.UserId == userId);
+        }
         public async Task UpdateAddress(UserAddress userAddress)
         {
             _context.TblUserAddresses.Update(userAddress);

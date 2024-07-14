@@ -11,6 +11,7 @@ namespace PRN221_MeVaBe_Repo.Interfaces
     {
         Task<List<UserAddress>> GetAllUserAddress();
         Task<UserAddress> GetUserAddressById(int id);
+        Task<UserAddress> GetUserAddressByUserId(int userId);
         Task AddAddress(UserAddress userAddress);
         Task UpdateAddress(UserAddress userAddress);
         Task DeleteAddress(int id);
