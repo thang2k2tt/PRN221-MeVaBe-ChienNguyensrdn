@@ -15,6 +15,8 @@ builder.Services.AddDbContext<DBContext>(options =>
    options.UseSqlServer(builder.Configuration.GetConnectionString("appsettings.json")));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserServices, UserServices>();
+builder.Services.AddScoped<IUserAAddressRepository, UserAddressRepository>();
+builder.Services.AddScoped<IUserAddressServices, UserAddressServices>();
 
 var app = builder.Build();
 
