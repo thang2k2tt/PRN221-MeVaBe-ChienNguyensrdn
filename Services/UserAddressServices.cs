@@ -1,6 +1,7 @@
 ﻿using PRN221_MeVaBe_Repo.DTOs;
 using PRN221_MeVaBe_Repo.Interfaces;
 using PRN221_MeVaBe_Repo.Models;
+using Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Services
 {
-    public class UserAddressServices
+    public class UserAddressServices : IUserAddressServices
     {
         private readonly IUserAAddressRepository _repository;
         private readonly IUserRepository _userRepository;
