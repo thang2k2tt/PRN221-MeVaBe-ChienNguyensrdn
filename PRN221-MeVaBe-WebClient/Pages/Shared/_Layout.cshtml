@@ -53,7 +53,12 @@
                             <button class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4" data-bs-toggle="modal" data-bs-target="#searchModal"><i class="fas fa-search text-primary"></i></button>
                             <a asp-page="/Cart/Index" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
-                                <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                                @if (Context.Session.GetInt32("cartItem") == 0 || !Context.Session.GetInt32("cartItem").HasValue)
+                                {
+                                    <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">0</span>
+                                }else{
+                                    <span class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">@Context.Session.GetInt32("cartItem")</span>
+                                }
                             </a>
                             <a href="/Users/Login" class="my-auto">
                                 <i class="fas fa-user fa-2x"></i>
