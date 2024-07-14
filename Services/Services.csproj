@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\PRN221-MeVaBe-Repo\PRN221-MeVaBe-Repo.csproj" />
+  </ItemGroup>
+
 </Project>

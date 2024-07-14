@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace PRN221_MeVaBe_Repo.DTOs
 {
-    public class CreateAddressDTO
+    public class UpdateAddressDTO
     {
-
-        public int? UserId { get; set; }
-
+        public int Id { get; set; }
         public string? Province { get; set; }
 
         public string? District { get; set; }

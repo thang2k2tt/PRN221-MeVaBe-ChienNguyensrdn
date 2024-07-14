@@ -34,7 +34,7 @@ namespace PRN221_MeVaBe_Repo.Repositories
             }
         }
 
-        public async Task<User> GetUserByid(int id)
+        public async Task<User> GetUserByid(int? id)
         {
             return await _dbContext.TblUsers.FirstOrDefaultAsync(sc => sc.Id == id);
         }

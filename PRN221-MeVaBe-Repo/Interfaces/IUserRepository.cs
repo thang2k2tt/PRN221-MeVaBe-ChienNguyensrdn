@@ -10,7 +10,7 @@ namespace PRN221_MeVaBe_Repo.Interfaces
     public interface IUserRepository
     {
         Task<User> Login(string email, string password);
-        Task<User> GetUserByid(int id);
+        Task<User> GetUserByid(int? id);
         Task<bool> UpdateUsersPassword(int id, string password);
         Task CreateUser(User user);
         Task DeleteAccount(int userId);
