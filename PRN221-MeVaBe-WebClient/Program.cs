@@ -2,12 +2,17 @@ using PRN221_MeVaBe_Repo.Interfaces;
 using PRN221_MeVaBe_Repo.Repositories;
 using Services.Interface;
 using Services;
+using Microsoft.EntityFrameworkCore;
+using PRN221_MeVaBe_Repo.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddDbContext<DBContext>(options =>
+   options.UseSqlServer(builder.Configuration.GetConnectionString("appsettings.json")));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserServices, UserServices>();
 
