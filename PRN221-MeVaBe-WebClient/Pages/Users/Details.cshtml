@@ -1,27 +1,29 @@
-﻿@page
+﻿@page "/Users/Details/{userId:int}"
 @model PRN221_MeVaBe_WebClient.Pages.Users.DetailsModel
 @{
     ViewData["Title"] = "User Details";
 }
 
-<style>
-
-    body {
-        padding: 100px;
-    }
-
-    dt {
-        font-weight: bold;
-    }
-
-    img {
-        max-width: 200px;
-        max-height: 200px;
-    }
-</style>
-
 
 <head>
+
+    <style>
+
+        body {
+            padding: 100px;
+        }
+
+        dt {
+            font-weight: bold;
+        }
+
+        img {
+            max-width: 200px;
+            max-height: 200px;
+        }
+    </style>
+
+
     <meta charset="utf-8">
     <title>Fruitables - Vegetable Website Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -73,6 +75,4 @@
         </dl>
     </div>
 
-    <!-- Link tới Bootstrap JavaScript và các script tùy chỉnh của bạn nếu cần -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
