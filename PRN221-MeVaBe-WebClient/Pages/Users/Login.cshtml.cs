@@ -47,7 +47,6 @@ namespace PRN221_MeVaBe_WebClient.Pages.Users
                 return Page();
             }
 
-            // Đăng nhập thành công, chuyển hướng đến trang khác
             return RedirectToPage("/HomePage");
         }
     }
