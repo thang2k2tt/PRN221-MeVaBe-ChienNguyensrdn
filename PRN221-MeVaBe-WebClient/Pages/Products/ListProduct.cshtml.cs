@@ -68,5 +68,11 @@ namespace PRN221_MeVaBe_WebClient.Pages
 
             return Page();
         }
+
+        //public IActionResult search(string keyword)
+        //{
+        //    Products = unitOfWork.ProductRepository.Get(includeProperties: "ProductCategory",)
+        //    return Page();
+        //}
     }
 }
