@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PRN221-MeVaBe-WebClient-Use
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PRN221-MeVaBe-WebClient-Admin", "PRN221-MeVaBe-WebClient-Admin\PRN221-MeVaBe-WebClient-Admin.csproj", "{3B001333-B272-4ADB-849F-FEA1F3E825A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{C4133097-D019-43E2-AEC9-ABC8AEEB6E60}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{C4133097-D019-43E2-AEC9-ABC8AEEB6E60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
