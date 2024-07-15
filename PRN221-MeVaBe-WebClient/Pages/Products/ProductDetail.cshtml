@@ -1,6 +1,7 @@
 ﻿@page
 @model PRN221_MeVaBe_WebClient.Pages.Products.ProductDetailModel
 @{
+    var userId = HttpContext.Session.GetInt32("userId");
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -25,6 +26,8 @@
     <link href="../lib/lightbox/css/lightbox.min.css" rel="stylesheet">
     <link href="../lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
+    <!-- SweetAlert-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="../css/bootstrap.min.css" rel="stylesheet">
@@ -34,6 +37,7 @@
 </head>
 
 <body>
+    <input type="hidden" value="@userId" id="userId" />
 
     <!-- Spinner Start -->
     <div id="spinner" class="show w-100 vh-100 bg-white position-fixed translate-middle top-50 start-50  d-flex align-items-center justify-content-center">
@@ -86,14 +90,19 @@
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
-                                <input type="text" class="form-control form-control-sm text-center border-0" value="1">
+                                <input type="text" class="form-control form-control-sm text-center border-0" id="quanity-product" value="1">
                                 <div class="input-group-btn">
                                     <button class="btn btn-sm btn-plus rounded-circle bg-light border">
                                         <i class="fa fa-plus"></i>
                                     </button>
                                 </div>
                             </div>
-                            <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                            <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"
+                               data-product-id="@Model.Product.Id"
+                               data-user-id="@userId"
+                               onclick="addToCartWithQuantity(event, this)">
+                                <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                            </a>
                         </div>
                         <div class="col-lg-12">
                             <nav>
@@ -231,7 +240,12 @@
                                 <p>@items.Description</p>
                                 <div class="d-flex justify-content-between flex-lg-wrap">
                                     <p class="text-dark fs-5 fw-bold"> @items.Price VND</p>
-                                    <a href="#" class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                                    <a href="#" class="btn border border-secondary rounded-pill px-3 text-primary"
+                                       data-product-id="@items.Id"
+                                       data-user-id="@userId"
+                                       onclick="addToCart(event, this)">
+                                        <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                    </a>
                                 </div>
                             </div>
                         </div>
@@ -252,7 +266,72 @@
     <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
 
     <!-- Template Javascript -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="../js/main.js"></script>
+    <script>
+        function addToCartWithQuantity(event, element) {
+            event.preventDefault();
+            const _userId = document.getElementById('userId').value;
+            if (_userId === "") {
+                // Điều hướng đến trang đăng nhập nếu userId không có giá trị
+                window.location.href = "/Users/Login"; // Thay "/Users/Login" bằng URL của trang đăng nhập
+            } else {
+                var productId = parseInt(element.getAttribute('data-product-id'), 10);
+                var userId = parseInt(element.getAttribute('data-user-id'), 10);
+                var quantity = parseInt(document.getElementById('quanity-product').value, 10);
+                let url = `/Cart/Index?handler=OnGet&productId=${productId}&userId=${userId}&quantity=${quantity}`;
+
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Added to Cart',
+                                text: 'Product added to cart successfully!',
+                            });
+                        } else {
+                            alert('Failed to add product to cart');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        alert('An error occurred while adding the product to cart');
+                    });
+            }
+        }
+        function addToCart(event, element) {
+            event.preventDefault();
+            const _userId = document.getElementById('userId').value;
+            if (_userId === "") {
+                // Điều hướng đến trang đăng nhập nếu userId không có giá trị
+                window.location.href = "/Users/Login"; // Thay "/Users/Login" bằng URL của trang đăng nhập
+            } else {
+                var productId = parseInt(element.getAttribute('data-product-id'), 10);
+                var userId = parseInt(element.getAttribute('data-user-id'), 10);
+
+                let url = `/Cart/Index?handler=OnGet&productId=${productId}&userId=${userId}`;
+                fetch(url)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Added to Cart',
+                                text: 'Product added to cart successfully!',
+                            });
+                        } else {
+                            alert('Failed to add product to cart');
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                        alert('An error occurred while adding the product to cart');
+                    });
+            }
+
+        }
+    </script>
 </body>
 
 </html>
