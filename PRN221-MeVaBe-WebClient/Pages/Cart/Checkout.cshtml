@@ -60,32 +60,34 @@
             <form action="#">
                 <div class="row g-5">
                     <div class="col-md-12 col-lg-6 col-xl-7">
-                        <div class="form-item">
-                            <select class="form-control">
-                                <option value="" selected disabled>Select address</option>
-                            </select>
-                        </div>
+                        @if(Model._UserAddress.Count() > 0)
+                        {
+                            <div class="form-item">
+                                <select class="form-control">
+                                    <option value="" selected disabled>Select address</option>
+                                    @foreach(var items in Model._UserAddress)
+                                    {
+                                        <option value="@items.Id">@items.Address</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                        
                         <div class="form-item">
                             <label class="form-label my-3">Province <sup>*</sup></label>
-                            <select class="form-control" id="province">
-                                <option value="" selected disabled>Select province</option>
-                            </select>
+                            <input type="text" class="form-control" placeholder="Province" readonly>
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">District <sup>*</sup></label>
-                            <select class="form-control" id="district">
-                                <option value="" selected disabled>Select district</option>
-                            </select>
+                            <input type="text" class="form-control" placeholder="District" readonly>
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Ward <sup>*</sup></label>
-                            <select class="form-control" id="ward">
-                                <option value="" selected disabled>Select ward</option>
-                            </select>
+                            <input type="text" class="form-control" placeholder="Ward" readonly>
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Address <sup>*</sup></label>
-                            <input type="text" class="form-control" placeholder="House Number Street Name">
+                            <input type="text" class="form-control" placeholder="House Number Street Name" readonly>
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Phone<sup>*</sup></label>
@@ -114,39 +116,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <th scope="row">
-                                            <div class="d-flex align-items-center mt-2">
-                                                <img src="../img/vegetable-item-2.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
-                                            </div>
-                                        </th>
-                                        <td class="py-5">Awesome Brocoli</td>
-                                        <td class="py-5">$69.00</td>
-                                        <td class="py-5">2</td>
-                                        <td class="py-5">$138.00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <div class="d-flex align-items-center mt-2">
-                                                <img src="../img/vegetable-item-5.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
-                                            </div>
-                                        </th>
-                                        <td class="py-5">Potatoes</td>
-                                        <td class="py-5">$69.00</td>
-                                        <td class="py-5">2</td>
-                                        <td class="py-5">$138.00</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">
-                                            <div class="d-flex align-items-center mt-2">
-                                                <img src="../img/vegetable-item-3.png" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
-                                            </div>
-                                        </th>
-                                        <td class="py-5">Big Banana</td>
-                                        <td class="py-5">$69.00</td>
-                                        <td class="py-5">2</td>
-                                        <td class="py-5">$138.00</td>
-                                    </tr>
+                                    @foreach (var items in Model.CartItems)
+                                    {
+                                        <tr>
+                                            <th scope="row">
+                                                <div class="d-flex align-items-center mt-2">
+                                                    <img src="../img/vegetable-item-2.jpg" class="img-fluid rounded-circle" style="width: 90px; height: 90px;" alt="">
+                                                </div>
+                                            </th>
+                                            <td class="py-5">@items.Product.ProductName</td>
+                                            <td class="py-5">@items.Product.Price VND</td>
+                                            <td class="py-5">@items.Quanity</td>
+                                            <td class="py-5">@(@items.Product.Price * @items.Quanity) VND</td>
+                                        </tr>
+                                    }
+
+
                                     <tr>
                                         <th scope="row">
                                         </th>
@@ -157,15 +142,13 @@
                                         </td>
                                         <td class="py-5">
                                             <div class="py-3 border-bottom border-top">
-                                                <p class="mb-0 text-dark">$414.00</p>
+                                                <p class="mb-0 text-dark">@Model._Cart.Total VND</p>
                                             </div>
                                         </td>
                                     </tr>
                                     <tr>
-                                        
                                     </tr>
                                     <tr>
-                                      
                                     </tr>
                                 </tbody>
                             </table>
@@ -189,88 +172,6 @@
     <script src="../lib/lightbox/js/lightbox.min.js"></script>
     <script src="../lib/owlcarousel/owl.carousel.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            axios.get('https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province', {
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Token': 'c4cb7ff5-36d5-11ef-8e53-0a00184fe694'
-                }
-            })
-                .then(function (response) {
-                    var provinces = response.data.data;
-                    var select = document.getElementById('province');
-                    provinces.forEach(function (province) {
-                        var option = document.createElement('option');
-                        option.value = province.ProvinceID;
-                        option.text = province.ProvinceName;
-                        select.add(option);
-                    });
-                })
-                .catch(function (error) {
-                    console.error('Error fetching provinces:', error);
-                });
-
-            document.getElementById('province').addEventListener('change', function () {
-                var provinceId = this.value;
-                if (provinceId) {
-                    // Fetch districts only after a province is selected
-                    axios.get(`https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${provinceId}`, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Token': 'c4cb7ff5-36d5-11ef-8e53-0a00184fe694'
-                        }
-                    })
-                        .then(function (response) {
-                            var districts = response.data.data;
-                            var districtSelect = document.getElementById('district');
-                            districtSelect.innerHTML = '<option value="">Select a district</option>'; // Clear previous options
-                            districts.forEach(function (district) {
-                                var option = document.createElement('option');
-                                option.value = district.DistrictID;
-                                option.text = district.DistrictName;
-                                districtSelect.add(option);
-                            });
-                        })
-                        .catch(function (error) {
-                            console.error('Error fetching districts:', error);
-                        });
-                } else {
-                    // Clear the district dropdown if no province is selected
-                    document.getElementById('district').innerHTML = '<option value="">Select a district</option>';
-                }
-            });
-            document.getElementById('district').addEventListener('change', function () {
-                var districtId = this.value;
-                if (districtId) {
-                    // Fetch wards only after a district is selected
-                    axios.get(`https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${districtId}`, {
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Token': 'c4cb7ff5-36d5-11ef-8e53-0a00184fe694'
-                        }
-                    })
-                        .then(function (response) {
-                            var wards = response.data.data;
-                            var wardSelect = document.getElementById('ward');
-                            wardSelect.innerHTML = '<option value="">Select a ward</option>'; // Clear previous options
-                            wards.forEach(function (ward) {
-                                var option = document.createElement('option');
-                                option.value = ward.WardCode;
-                                option.text = ward.WardName;
-                                wardSelect.add(option);
-                            });
-                        })
-                        .catch(function (error) {
-                            console.error('Error fetching wards:', error);
-                        });
-                } else {
-                    // Clear the ward dropdown if no district is selected
-                    document.getElementById('ward').innerHTML = '<option value="">Select a ward</option>';
-                }
-            });
-        });
-    </script>
     <!-- Template Javascript -->
     <script src="../js/main.js"></script>
 </body>

@@ -666,11 +666,17 @@
                 var productId = parseInt(element.getAttribute('data-product-id'), 10);
                 var userId = parseInt(element.getAttribute('data-user-id'), 10);
 
-                let url = `/Cart/Index?handler=OnGet&productId=${productId}&userId=${userId}`;
-                fetch(url)
+                let url = `/Cart/Index?handler=AddToCart&productId=${productId}&userId=${userId}&quantity=0`;
+                fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
+                            updateQuantity(userId);
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Added to Cart',
@@ -686,6 +692,28 @@
                     });
             }
             
+        }
+        function updateQuantity(userId) {
+            var element = document.getElementById('quantity-product-cart');
+            let url = `/Cart/Index?handler=UpdateCartQuantity&userId=${userId}`;
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        element.innerText = data.data;
+                    } else {
+                        alert('Failed to add product to cart');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('An error occurred while adding the product to cart');
+                });
         }
     </script>
 </body>
