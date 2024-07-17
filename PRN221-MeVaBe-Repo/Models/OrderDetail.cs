@@ -13,9 +13,9 @@ public partial class OrderDetail
 
     public string? OrderSatus { get; set; }
 
-    public DateOnly? CreateDate { get; set; }
+    public DateTime? CreateDate { get; set; }
 
-    public DateOnly? EndDate { get; set; }
+    public DateTime? EndDate { get; set; }
 
     public int UserId { get; set; }
 

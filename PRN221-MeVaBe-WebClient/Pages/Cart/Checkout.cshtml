@@ -57,45 +57,75 @@
     <div class="container-fluid py-5">
         <div class="container py-5">
             <h1 class="mb-4">Billing details</h1>
-            <form action="#">
+            <form method="post">
                 <div class="row g-5">
                     <div class="col-md-12 col-lg-6 col-xl-7">
                         @if(Model._UserAddress.Count() > 0)
                         {
                             <div class="form-item">
-                                <select class="form-control">
+                                <select onchange="fillData()" id="addressSelect" name="addressSelect" class="form-control">
                                     <option value="" selected disabled>Select address</option>
                                     @foreach(var items in Model._UserAddress)
                                     {
-                                        <option value="@items.Id">@items.Address</option>
+                                        <option  value="@items.Id">@items.Address</option>
                                     }
                                 </select>
                             </div>
                         }
-                        
+                        <script>
+                            function fillData() {
+                                var select = document.getElementById("addressSelect");
+                                var selectedValue = select.value;
+                                var selectedText = select.options[select.selectedIndex].text;
+                                console.log(selectedValue);
+                                let url = `/Cart/Checkout?handler=GetAddress&addressId=${selectedValue}`;
+                                fetch(url, {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json'
+                                    }
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        if (data.success) {
+                                            var province = document.getElementById("province");
+                                            var district = document.getElementById("district");
+                                            var ward = document.getElementById("ward");
+                                            var address = document.getElementById("address");
+                                            
+                                            province.value = data.data.province;
+                                            district.value = data.data.district;
+                                            ward.value = data.data.ward;
+                                            address.value = data.data.address;
+                                        } else {
+                                            alert('Failed to load address');
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        console.error('Error:', error);
+                                        alert('An error occurred while load address');
+                                    });
+                            }
+                        </script>
                         <div class="form-item">
                             <label class="form-label my-3">Province <sup>*</sup></label>
-                            <input type="text" class="form-control" placeholder="Province" readonly>
+                            <input name="province" id="province" type="text" class="form-control" placeholder="Province" >
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">District <sup>*</sup></label>
-                            <input type="text" class="form-control" placeholder="District" readonly>
+                            <input name="district" id="district" type="text" class="form-control" placeholder="District" >
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Ward <sup>*</sup></label>
-                            <input type="text" class="form-control" placeholder="Ward" readonly>
+                            <input name="ward" type="text" id="ward" class="form-control" placeholder="Ward" >
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Address <sup>*</sup></label>
-                            <input type="text" class="form-control" placeholder="House Number Street Name" readonly>
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label my-3">Phone<sup>*</sup></label>
-                            <input type="tel" class="form-control">
+                            <input name="address" type="text" id="address" class="form-control" placeholder="House Number Street Name" >
                         </div>
                         <div class="form-item">
                             <label class="form-label my-3">Payment type<sup>*</sup></label>
-                            <select class="form-control">
+                            <select name="payment" class="form-control">
                                 <option value="" selected disabled>Select payemnt type</option>
                                 <option value="COD">Thanh toán khi nhận hàng</option>
                                 <option value="Momo">Momo</option>
@@ -103,6 +133,7 @@
                             </select>
                         </div>
                     </div>
+                    <input type="hidden" name="cartId" value="@Model.CartItems.First().CartId" />
                     <div class="col-md-12 col-lg-6 col-xl-5">
                         <div class="table-responsive">
                             <table class="table">
@@ -154,7 +185,7 @@
                             </table>
                         </div>
                         <div class="row g-4 text-center align-items-center justify-content-center pt-4">
-                            <button type="button" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Place Order</button>
+                            <button type="submit" class="btn border-secondary py-3 px-4 text-uppercase w-100 text-primary">Place Order</button>
                         </div>
                     </div>
                 </div>
