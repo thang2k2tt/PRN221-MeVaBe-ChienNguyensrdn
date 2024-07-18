@@ -1,0 +1,76 @@
+﻿@page "Index"
+@model PRN221_MeVaBe_Repo.Pages.Category.IndexModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1> Management</h1>
+@if (Model.role == "1")
+{
+    <p>
+        <a asp-page="Create">Create New</a>
+    </p>
+    <form method="get">
+        <div class="form-group">
+            <label for="textSearch">Search:</label>
+            <input type="text" class="form-control" id="textSearch" name="textSearch" placeholder="" />
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+    <br />    
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductCategory[0].Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductCategory[0].Name)
+            </th>
+            
+            
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.ProductCategory)
+        {   
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                
+                @if (Model.role == "1")
+                {
+                    <td>
+                        <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
+                         |
+                        <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
+                    </td>
+                }
+                else
+                {
+                    
+                }
+
+            </tr>
+        }
+    </tbody>
+</table>
+@for (var i = 1; i <= Model.pageIndexMax; i++)
+{
+    <a class="button_page" href="/Category/Index?handler=OnGet&pageIndex=@i">
+        @(i)
+    </a>
+}
+<style>
+    .button_page {
+        padding: 5px 10px;
+        border: 1px solid;
+        margin-left: 10px;
+    }
+</style>
