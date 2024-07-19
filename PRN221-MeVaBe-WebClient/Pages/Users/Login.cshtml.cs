@@ -71,5 +71,10 @@ namespace PRN221_MeVaBe_WebClient.Pages.Users
             // Đăng nhập thành công, chuyển hướng đến trang khác
             return RedirectToPage("/HomePage");
         }
+        public async Task<IActionResult> OnGetLogoutAsync()
+        {
+            HttpContext.Session.Remove("userId");
+            return Page();
+        }
     }
 }

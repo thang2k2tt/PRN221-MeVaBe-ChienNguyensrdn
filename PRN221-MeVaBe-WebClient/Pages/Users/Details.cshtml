@@ -1,29 +1,11 @@
-﻿@page "/Users/Details/{userId:int}"
+﻿@page 
 @model PRN221_MeVaBe_WebClient.Pages.Users.DetailsModel
 @{
     ViewData["Title"] = "User Details";
+    var userId = HttpContext.Session.GetInt32("userId");
 }
 
-
 <head>
-
-    <style>
-
-        body {
-            padding: 100px;
-        }
-
-        dt {
-            font-weight: bold;
-        }
-
-        img {
-            max-width: 200px;
-            max-height: 200px;
-        }
-    </style>
-
-
     <meta charset="utf-8">
     <title>Fruitables - Vegetable Website Template</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -49,12 +31,162 @@
 
     <!-- Template Stylesheet -->
     <link href="../css/style.css" rel="stylesheet">
+    <style>
+        .profile-container {
+            display: flex;
+        }
+
+        .profile {
+            display: flex;
+            align-items: center; /* Align items vertically in the center */
+        }
+        .sidebar {
+            width: 20%;
+            padding: 20px;
+        }
+
+        .profile-image {
+            width: 25%;
+            border-radius: 50%;
+        }
+
+        .edit-profile-link {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .menu ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .menu li {
+            margin: 10px 0;
+        }
+
+        .menu a {
+            text-decoration: none;
+            color: black;
+        }
+
+            .menu a.active {
+                font-weight: bold;
+            }
+
+        .main-content {
+            width: 80%;
+            padding: 20px;
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .search-box {
+            width: 50%;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 20px;
+        }
+
+        .order-status {
+            flex: 1;
+        }
+
+        .badge {
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .shop-name {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .chat-button, .view-shop-button {
+            margin-top: 10px;
+            display: block;
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .product-details {
+            flex: 3;
+            display: flex;
+        }
+
+        .product-image {
+            width: 20%;
+        }
+
+        .product-info {
+            padding-left: 20px;
+        }
+
+        .product-return {
+            color: green;
+        }
+
+        .product-price {
+            flex: 1;
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .order-summary {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .total-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: red;
+        }
+
+        .buy-again-button, .contact-seller-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #ff6600;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 
-<body>
-    <div class="container">
-        <h1 class="mt-5 mb-4 text-center">User Details</h1>
-
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<div class="profile-container">
+    <div class="sidebar">
+        <div class="profile">
+            <img src="../img/banner-fruits.jpg" alt="Profile Image" class="profile-image" />
+            <h2>@Model.User.Fullname</h2>
+        </div>
+        <nav class="menu">
+            <ul>
+                <li><a href="#" onclick="showUserProfile()" id="profile" class="active">Tài Khoản Của Tôi</a></li>
+                <li><a href="#" onclick="showAddress()" id="address">Địa chỉ</a></li>
+                <li><a href="#" onclick="showOrder()" id="order" >Đơn Mua</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="main-content" id="userProfile" style="display:block">
         <dl class="row">
             <dt class="col-sm-2">Fullname:</dt>
             <dd class="col-sm-10">@Model.User.Fullname</dd>
@@ -70,9 +202,165 @@
 
             <dt class="col-sm-2">Avatar:</dt>
             <dd class="col-sm-10">
-                <img src="@Model.User.Avatar" alt="Avatar" class="img-fluid rounded-circle">
+                <img src="../img/banner-fruits.jpg" alt="Avatar" style="height: 50px; width:50px">
             </dd>
         </dl>
-    </div>
 
-</body>
+    </div>
+    <div class="main-content" id="addressList" style="display:none">
+        @foreach(var items in Model.Address)
+        {
+            <div class="order-item">
+                <div class="product-details">
+                    <div class="product-info">
+                        <h2 class="product-name">@Model.User.Fullname | @Model.User.Phone</h2>
+                        <h4 class="product-return">@items.Address, @items.Ward, @items.District, @items.Province</h4>
+                    </div>
+                </div>
+            </div>
+        }
+        
+        <div class="order-summary">
+            <button onclick="addNewAddress()" class="buy-again-button">Add new</button>
+        </div>
+    </div>
+    <div class="main-content" id="orderList" style="display:none">
+        <div class="order-header">
+            <h1>Tất cả</h1>
+        </div>
+        @foreach(var items in Model.OrderItem)
+        {
+            <div class="order-item">
+                <div class="product-details">
+                    <img src="../img/banner-fruits.jpg" alt="Product Image" class="product-image" style="height: 75px; width:75px" />
+                    <div class="product-info">
+                        <h4 class="product-name">@items.Product.ProductName</h4>
+                        <p class="product-return">Quantity: @items.Quantity</p>
+                    </div>
+                    <div class="product-price">
+                        <p class="price">@items.Product.Price VND</p>
+                    </div>
+                </div>
+            </div>
+            <div class="order-summary">
+                <p>Thành tiền: <span class="total-price">@(@items.Product.Price * items.Quantity) VND</span></p>
+                <button onclick="buyAgain('/Products/ProductDetail?handler=OnGet&productId=@items.Id')" class="buy-again-button">Mua Lại</button>
+            </div>
+        }
+    </div>
+    <div class="main-content" id="addAddress" style="display:none">
+        <button onclick="backListAddress()" type="submit" id="backListAddress" class="btn btn-primary">Back</button>
+        <form method="post">
+            <input type="hidden" asp-for="AddressDTO.UserId" value="@userId" />
+
+            <div class="form-group">
+                <label asp-for="AddressDTO.Province"></label>
+                <input class="form-control" asp-for="AddressDTO.Province" />
+                <span asp-validation-for="AddressDTO.Province" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AddressDTO.District"></label>
+                <input class="form-control" asp-for="AddressDTO.District" />
+                <span asp-validation-for="AddressDTO.District" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AddressDTO.Ward"></label>
+                <input class="form-control" asp-for="AddressDTO.Ward" />
+                <span asp-validation-for="AddressDTO.Ward" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AddressDTO.Address"></label>
+                <textarea class="form-control" asp-for="AddressDTO.Address"></textarea>
+                <span asp-validation-for="AddressDTO.Address" class="text-danger"></span>
+            </div>
+            <br />
+            <button type="submit" class="btn btn-primary">Add Address</button>
+        </form>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../lib/easing/easing.min.js"></script>
+<script src="../lib/waypoints/waypoints.min.js"></script>
+<script src="../lib/lightbox/js/lightbox.min.js"></script>
+<script src="../lib/owlcarousel/owl.carousel.min.js"></script>
+
+<!-- Template Javascript -->
+<script src="../js/main.js"></script>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+<script>
+    function showUserProfile() {
+        const userProfile = document.getElementById('userProfile');
+        const address = document.getElementById('addressList');
+        const order = document.getElementById('orderList');
+
+        const _profile = document.getElementById('profile');
+        const _address = document.getElementById('address');
+        const _order = document.getElementById('order');
+
+        userProfile.style.display = 'block';
+        address.style.display = 'none';
+        order.style.display = 'none';
+
+        _profile.classList.add('active');
+        _address.classList.remove('active');
+        _order.classList.remove('active');
+       
+    }
+    function showAddress() {
+        const userProfile = document.getElementById('userProfile');
+        const address = document.getElementById('addressList');
+        const order = document.getElementById('orderList');
+
+        const _profile = document.getElementById('profile');
+        const _address = document.getElementById('address');
+        const _order = document.getElementById('order');
+
+        address.style.display = 'block';
+        userProfile.style.display = 'none';
+        order.style.display = 'none';
+
+        _profile.classList.remove('active');
+        _address.classList.add('active');
+        _order.classList.remove('active');
+    }
+    function showOrder() {
+        const userProfile = document.getElementById('userProfile');
+        const address = document.getElementById('addressList');
+        const order = document.getElementById('orderList');
+
+        const _profile = document.getElementById('profile');
+        const _address = document.getElementById('address');
+        const _order = document.getElementById('order');
+
+        order.style.display = 'block';
+        address.style.display = 'none';
+        userProfile.style.display = 'none';
+
+        _profile.classList.remove('active');
+        _address.classList.remove('active');
+        _order.classList.add('active');
+    }
+    function buyAgain(url) {
+        window.location.href = "" + url;
+    }
+    function addNewAddress(){
+        const address = document.getElementById('addressList');
+        const _address = document.getElementById('addAddress');
+
+        address.style.display = 'none';
+        _address.style.display = 'block';
+    }
+    function backListAddress(){
+        const address = document.getElementById('addressList');
+        const _address = document.getElementById('addAddress');
+
+        address.style.display = 'block';
+        _address.style.display = 'none';
+    }
+</script>
