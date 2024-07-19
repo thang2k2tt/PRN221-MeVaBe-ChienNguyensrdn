@@ -34,6 +34,31 @@
 
     <!-- Template Stylesheet -->
     <link href="../css/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMeWEAl1HfjLAnt9Kzfpg08cWwZ9z0J9DDGcxJ3" crossorigin="anonymous">
+    <style>
+        .rating {
+            display: flex;
+            flex-direction: row-reverse;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+            .rating input {
+                display: none;
+            }
+
+            .rating label {
+                font-size: 15px;
+                color: lightgray;
+                padding: 0 0.1rem;
+            }
+
+                .rating label:hover,
+                .rating label:hover ~ label,
+                .rating input:checked ~ label {
+                    color: gold;
+                }
+    </style>
 </head>
 
 <body>
@@ -47,7 +72,6 @@
     <!-- Navbar start -->
     <!-- Navbar End -->
     <!-- Modal Search Start -->
-    
     <!-- Modal Search End -->
     <!-- Single Page Header start -->
     <div class="container-fluid page-header py-5">
@@ -76,13 +100,6 @@
                             <h4 class="fw-bold mb-3">@Model.Product.ProductName</h4>
                             <p class="mb-3">Category: @Model.Product.ProductCategory.Name</p>
                             <h5 class="fw-bold mb-3">@Model.Product.Price VND</h5>
-                            <div class="d-flex mb-4">
-                                <i class="fa fa-star text-secondary"></i>
-                                <i class="fa fa-star text-secondary"></i>
-                                <i class="fa fa-star text-secondary"></i>
-                                <i class="fa fa-star text-secondary"></i>
-                                <i class="fa fa-star"></i>
-                            </div>
                             <p class="mb-4">@Model.Product.Description</p>
                             <div class="input-group quantity mb-5" style="width: 100px;">
                                 <div class="input-group-btn">
@@ -126,21 +143,25 @@
                                     </p>
                                 </div>
                                 <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
-                                    @foreach(var items in Model.Feedbacks)
+                                    @foreach (var items in Model.Feedbacks)
                                     {
                                         <div class="d-flex">
                                             <img src="../img/avatar.jpg" class="img-fluid rounded-circle p-3" style="width: 100px; height: 100px;" alt="">
                                             <div class="">
-                                                <p class="mb-2" style="font-size: 14px;">@items.User.Dob</p>
+                                                <p class="mb-2" style="font-size: 14px;">@items.CreateDate</p>
                                                 <div class="d-flex justify-content-between">
                                                     <h5>@items.User.Fullname</h5>
                                                     <div class="d-flex mb-3">
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star text-secondary"></i>
-                                                        <i class="fa fa-star"></i>
+                                                        @for (int i = 0; i < items.Rate; i++)
+                                                        {
+                                                            <i class="fa fa-star text-secondary"></i>
+                                                        }
+                                                        @for(int j = 0; j< 5 - items.Rate; j++)
+                                                        {
+                                                            <i class="fa fa-star"></i>
+                                                        }
                                                     </div>
+                                                    
                                                 </div>
                                                 <p>
                                                     @items.Content
@@ -164,29 +185,31 @@
                         <form action="#">
                             <h4 class="mb-5 fw-bold">Leave a Reply</h4>
                             <div class="row g-4">
-                                <div class="col-lg-6">
-                                    <div class="border-bottom rounded">
-                                        <input type="email" class="form-control border-0" placeholder="Your Email *">
-                                    </div>
-                                </div>
                                 <div class="col-lg-12">
                                     <div class="border-bottom rounded my-4">
-                                        <textarea name="" id="" class="form-control border-0" cols="30" rows="8" placeholder="Your Review *" spellcheck="false"></textarea>
+                                        <textarea name="" id="feedbackContent" class="form-control border-0" cols="30" rows="8" placeholder="Your Review *" spellcheck="false"></textarea>
                                     </div>
                                 </div>
                                 <div class="col-lg-12">
                                     <div class="d-flex justify-content-between py-3 mb-5">
                                         <div class="d-flex align-items-center">
                                             <p class="mb-0 me-3">Please rate:</p>
-                                            <div class="d-flex align-items-center" style="font-size: 12px;">
-                                                <i class="fa fa-star text-muted"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
+                                            <div class="rating">
+                                                <input type="radio" id="star5" name="Stars" value="5" />
+                                                <label for="star5" title="5 stars"><i class="fa fa-star"></i></label>
+                                                <input type="radio" id="star4" name="Stars" value="4" />
+                                                <label for="star4" title="4 stars"><i class="fa fa-star"></i></label>
+                                                <input type="radio" id="star3" name="Stars" value="3" />
+                                                <label for="star3" title="3 stars"><i class="fa fa-star"></i></label>
+                                                <input type="radio" id="star2" name="Stars" value="2" />
+                                                <label for="star2" title="2 stars"><i class="fa fa-star"></i></label>
+                                                <input type="radio" id="star1" name="Stars" value="1" />
+                                                <label for="star1" title="1 star"><i class="fa fa-star"></i></label>
                                             </div>
                                         </div>
-                                        <a href="#" class="btn border border-secondary text-primary rounded-pill px-4 py-3"> Post Comment</a>
+                                        <input type="hidden" id="selectedStar" name="SelectedStar" value="" />
+                                        <input type="hidden" id="productId" value="@Model.Product.Id" />
+                                        <a onclick="CreateFeedback()" class="btn border border-secondary text-primary rounded-pill px-4 py-3"> Post Comment</a>
                                     </div>
                                 </div>
                             </div>
@@ -203,7 +226,7 @@
                             <div class="mb-4">
                                 <h4>Categories</h4>
                                 <ul class="list-unstyled fruite-categorie">
-                                    @foreach(var items in Model.ProductCategories)
+                                    @foreach (var items in Model.ProductCategories)
                                     {
                                         <li>
                                             <div class="d-flex justify-content-between fruite-name">
@@ -228,7 +251,7 @@
             <h1 class="fw-bold mb-0">Related products</h1>
             <div class="vesitable">
                 <div class="owl-carousel vegetable-carousel justify-content-center">
-                    @foreach(var items in Model.Products)
+                    @foreach (var items in Model.Products)
                     {
                         <div class="border border-primary rounded position-relative vesitable-item">
                             <div class="vesitable-img">
@@ -342,6 +365,45 @@
             }
 
         }
+        function CreateFeedback() {
+            event.preventDefault();
+            const _userId = document.getElementById('userId').value;
+            const _productId = document.getElementById('productId').value;
+            const _rating = document.getElementById('selectedStar').value;
+            const content = document.getElementById('feedbackContent').value;
+            let url = `/Products/ProductDetail?handler=CreateFeedback&userId=${_userId}&productId=${_productId}&rating=${_rating}&content=${content}`
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: "Feedback success",
+                            width: 600,
+                            padding: "3em",
+                            color: "#716add",
+                            background: "#fff url(/images/trees.png)",
+                            backdrop: `
+                                rgba(0,0,123,0.4)
+                                url("/images/nyan-cat.gif")
+                                left top
+                                no-repeat
+                            `
+                        });
+                    }else{
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: "Buy product to feedback!",
+                        });
+                    }
+                })
+
+        }
         function updateQuantity(userId) {
             var element = document.getElementById('quantity-product-cart');
             let url = `/Cart/Index?handler=UpdateCartQuantity&userId=${userId}`;
@@ -364,6 +426,13 @@
                     alert('An error occurred while adding the product to cart');
                 });
         }
+    </script>
+    <script>
+        document.querySelectorAll('.rating input').forEach((input) => {
+            input.addEventListener('change', (event) => {
+                document.getElementById('selectedStar').value = event.target.value;
+            });
+        });
     </script>
 </body>
 

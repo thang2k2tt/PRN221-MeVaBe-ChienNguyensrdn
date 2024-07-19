@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var userId = Context.Session.GetInt32("userId");
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,6 +11,42 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/PRN221_MeVaBe_WebClient.styles.css" asp-append-version="true" />
+    <style>
+        .dropdown {
+            position: relative;
+            display: inline-block;
+            margin-top:5px;
+        }
+
+            .dropdown .my-auto {
+                display: flex;
+                align-items: center;
+            }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #f1f1f1;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -60,9 +99,23 @@
                                     <span id="quantity-product-cart" class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1" style="top: -5px; left: 15px; height: 20px; min-width: 20px;">@Context.Session.GetInt32("cartItem")</span>
                                 }
                             </a>
-                            <a href="/Users/Login" class="my-auto">
-                                <i class="fas fa-user fa-2x"></i>
-                            </a>
+                            @if (!Context.Session.GetInt32("userId").HasValue)
+                            {
+                                <a href="/Users/Login" class="my-auto">
+                                    <i class="fas fa-user fa-2x"></i>
+                                </a>
+                            }else
+                            {
+                                <div class="dropdown">
+                                    <a href="/Users/Login" class="my-auto">
+                                        <i class="fas fa-user fa-2x"></i>
+                                    </a>
+                                    <div class="dropdown-content">
+                                        <a href="/Users/Details?handler=OnGetAsync&userId=@userId">Profile</a>
+                                        <a href="/Users/Login?handler=Logout">Logout</a>
+                                    </div>
+                                </div>
+                            }
                         </div>
                     </div>
                 </nav>
