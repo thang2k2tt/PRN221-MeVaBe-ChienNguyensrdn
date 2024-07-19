@@ -16,7 +16,7 @@ builder.Services.AddDbContext<DBContext>(options =>
    options.UseSqlServer(builder.Configuration.GetConnectionString("appsettings.json")));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserServices, UserServices>();
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddRazorPages().AddMvcOptions(options =>
 {
     options.Filters.Add(new IgnoreAntiforgeryTokenAttribute());

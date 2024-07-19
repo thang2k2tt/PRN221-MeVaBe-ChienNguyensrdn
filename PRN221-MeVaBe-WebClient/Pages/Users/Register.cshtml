@@ -65,7 +65,7 @@
                 <span asp-validation-for="Input.Fullname" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Input.Dob"></label>
+                <label asp-for="Input.Dob">Date of birth</label>
                 <input asp-for="Input.Dob" class="form-control" type="date" />
                 <span asp-validation-for="Input.Dob" class="text-danger"></span>
             </div>
@@ -74,7 +74,9 @@
                 <input asp-for="Input.Phone" class="form-control" />
                 <span asp-validation-for="Input.Phone" class="text-danger"></span>
             </div>
+            <br />
             <button type="submit" class="btn btn-primary">Đăng ký</button>
+            <p><a href="/Users/Login">Back to login</a></p>
         </form>
     </div>
 
