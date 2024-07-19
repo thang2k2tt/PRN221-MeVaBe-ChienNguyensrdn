@@ -175,8 +175,8 @@
 <div class="profile-container">
     <div class="sidebar">
         <div class="profile">
-            <img src="../img/banner-fruits.jpg" alt="Profile Image" class="profile-image" />
-            <h2>@Model.User.Fullname</h2>
+            <img src="../img/avatar.jpg" alt="Profile Image" class="profile-image" />
+            <h6 style="margin-top:12px;margin-left:2px">@Model.User.Fullname</h6>
         </div>
         <nav class="menu">
             <ul>
@@ -202,7 +202,7 @@
 
             <dt class="col-sm-2">Avatar:</dt>
             <dd class="col-sm-10">
-                <img src="../img/banner-fruits.jpg" alt="Avatar" style="height: 50px; width:50px">
+                <img src="../img/avatar.jpg" alt="Avatar" style="height: 50px; width:50px">
             </dd>
         </dl>
 
@@ -232,7 +232,7 @@
         {
             <div class="order-item">
                 <div class="product-details">
-                    <img src="../img/banner-fruits.jpg" alt="Product Image" class="product-image" style="height: 75px; width:75px" />
+                    <img src="../img/@items.Product.CoverImage" alt="Product Image" class="product-image" style="height: 75px; width:75px" />
                     <div class="product-info">
                         <h4 class="product-name">@items.Product.ProductName</h4>
                         <p class="product-return">Quantity: @items.Quantity</p>
@@ -244,7 +244,7 @@
             </div>
             <div class="order-summary">
                 <p>Thành tiền: <span class="total-price">@(@items.Product.Price * items.Quantity) VND</span></p>
-                <button onclick="buyAgain('/Products/ProductDetail?handler=OnGet&productId=@items.Id')" class="buy-again-button">Mua Lại</button>
+                <button onclick="buyAgain('/Products/ProductDetail?handler=OnGet&productId=@items.ProductId')" class="buy-again-button">Mua Lại</button>
             </div>
         }
     </div>

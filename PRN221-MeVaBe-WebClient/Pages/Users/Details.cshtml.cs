@@ -24,6 +24,7 @@ namespace PRN221_MeVaBe_WebClient.Pages.Users
         public User User { get; private set; }
         public List<UserAddress> Address { get; private set; }
         public List<OrderItem> OrderItem { get; private set; }
+        public int pageIndex { get; set; }
         [BindProperty]
         public CreateAddressDTO AddressDTO { get; set; }
         public async Task<IActionResult> OnGetAsync(int userId)
@@ -31,6 +32,7 @@ namespace PRN221_MeVaBe_WebClient.Pages.Users
             User = await _userServices.GetUserById(userId);
             Address = (List<UserAddress>)unitOfWork.UserAddressRepository.Get(filter: a => a.UserId == userId);
             var order = unitOfWork.OrderDetailRepository.Get(filter: o => o.UserId == userId);
+            
             List<OrderItem> orderItems = new List<OrderItem>();
             if(order.Count() > 0)
             {
