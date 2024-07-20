@@ -3,49 +3,74 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - PRN221_MeVaBe_WebClient_Adminn</title>
+    <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/PRN221_MeVaBe_WebClient_Adminn.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Include Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">PRN221_MeVaBe_WebClient_Adminn</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <nav class="col-md-2 bg-light sidebar">
+                <button id="sidebarToggle" class="btn btn-primary" style="margin-left:15px">
+                    <i class="fas fa-bars"></i>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["Page"].ToString() == "/Index" ? "active" : "")" asp-page="/Index">
+                                <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            <a class="nav-link @(ViewContext.RouteData.Values["Page"].ToString() == "/Product" ? "active" : "")" asp-page="/About">
+                                <i class="fas fa-box-open"></i> <span>Products</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Page"].ToString() == "/Order" ? "active" : "")" asp-page="/Contact">
+                                <i class="fas fa-shopping-cart"></i> <span>Orders</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Page"].ToString() == "/Feedback" ? "active" : "")" asp-page="/Contact">
+                                <i class="fas fa-comments"></i> <span>Feedbacks</span>
+                            </a>
                         </li>
                     </ul>
                 </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+            </nav>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2024 - PRN221_MeVaBe_WebClient_Adminn - <a asp-area="" asp-page="/Privacy">Privacy</a>
+            <!-- Main content -->
+            <main role="main" class="col-md-10 ml-sm-auto px-4">
+                @RenderBody()
+            </main>
         </div>
-    </footer>
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        document.getElementById("sidebarToggle").addEventListener("click", function () {
+            var sidebar = document.querySelector(".sidebar");
+            if (window.innerWidth < 768) {
+                sidebar.classList.toggle("active");
+            } else {
+                sidebar.classList.toggle("collapsed");
+                if (sidebar.classList.contains("collapsed")) {
+                    sidebar.style.maxWidth = "100px";
+                } else {
+                    sidebar.style.maxWidth = "250px";
+                }
+            }
+        });
+    </script>
 </body>
 </html>
