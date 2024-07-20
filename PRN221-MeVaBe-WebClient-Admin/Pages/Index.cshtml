@@ -1,10 +1,166 @@
 ﻿@page
 @model IndexModel
 @{
-    ViewData["Title"] = "Home page";
+    ViewData["Title"] = "Dashboard";
 }
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <!-- Include Font Awesome CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<h1 class="mt-4 mb-4">Dashboard</h1>
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Payment Statistics</h5>
+                <canvas id="userChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Order Overview</h5>
+                <canvas id="activityChart"></canvas>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-box"></i> Total Product
+                </h5>
+                <h2 class="card-text">1,234</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-users"></i> Active User
+                </h5>
+                <h2 class="card-text">56</h2>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-chart-line"></i> Completion Rate
+                </h5>
+                <h2 class="card-text">78%</h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Table for Top-Selling Products -->
+<div class="row">
+    <div class="col-md-12 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <i class="fas fa-chart-bar"></i> Top-Selling Products
+                </h5>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th scope="col"><i class="fas fa-hashtag"></i> #</th>
+                            <th scope="col"><i class="fas fa-box"></i> Product Name</th>
+                            <th scope="col"><i class="fas fa-sort-amount-up"></i> Units Sold</th>
+                            <th scope="col"><i class="fas fa-dollar-sign"></i> Revenue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Product A</td>
+                            <td>150</td>
+                            <td>$3000</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Product B</td>
+                            <td>120</td>
+                            <td>$2400</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Product C</td>
+                            <td>100</td>
+                            <td>$2000</td>
+                        </tr>
+                        <!-- Add more products as needed -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // User Statistics Chart
+        var userCtx = document.getElementById('userChart').getContext('2d');
+        var userChart = new Chart(userCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'VNPay',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }, {
+                    label: 'Thanh Toán khi nhận hàng',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+
+        // Activity Overview Chart
+        var activityCtx = document.getElementById('activityChart').getContext('2d');
+        var activityChart = new Chart(activityCtx, {
+            type: 'line',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Order Completions',
+                    data: [65, 59, 80, 81, 56, 55],
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+}
