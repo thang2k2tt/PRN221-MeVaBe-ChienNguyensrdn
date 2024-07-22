@@ -27,5 +27,6 @@ namespace PRN221_MeVaBe_Repo.Interfaces
 
         public void Update(T entityToUpdate);
         public int Count(IList<T> entities, int pageSize);
+        IQueryable<T> AsQueryable();
     }
 }

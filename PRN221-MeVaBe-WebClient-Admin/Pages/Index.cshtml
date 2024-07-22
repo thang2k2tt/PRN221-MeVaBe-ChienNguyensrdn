@@ -73,37 +73,32 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col"><i class="fas fa-hashtag"></i> #</th>
+                            <th scope="col"><i class="fas fa-hashtag"></i></th>
                             <th scope="col"><i class="fas fa-box"></i> Product Name</th>
                             <th scope="col"><i class="fas fa-sort-amount-up"></i> Units Sold</th>
                             <th scope="col"><i class="fas fa-dollar-sign"></i> Revenue</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Product A</td>
-                            <td>150</td>
-                            <td>$3000</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Product B</td>
-                            <td>120</td>
-                            <td>$2400</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Product C</td>
-                            <td>100</td>
-                            <td>$2000</td>
-                        </tr>
+                        @for (int i = 0; i < Model.ProductBestSeller.Count(); i++)
+                        {
+                            <tr>
+                                <th scope="row">@(@i + 1)</th>
+                                <td>@Model.ProductSeller[i].ProductName</td>
+                                <td>@Model.ProductBestSeller[i].Quantity</td>
+                                <td>@((@Model.ProductBestSeller[i].Quantity * @Model.ProductSeller[i].Price)) VND</td>
+                            </tr>
+                        }
                         <!-- Add more products as needed -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
+    <input hidden id="VNPay" value="@Model.paymentWithVNPayJson" />
+    <input hidden id="COD" value="@Model.paymentWithCODJson" />
+    <input hidden id="Complete" value="@Model.orderCompleteJson" />
+    <input hidden id="Pending" value="@Model.orderPendingJson" />
 </div>
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
@@ -113,21 +108,28 @@
     <script>
         // User Statistics Chart
         var userCtx = document.getElementById('userChart').getContext('2d');
+        var vnpay = document.getElementById('VNPay').value;
+        var cod = document.getElementById('COD').value;
+        var _cod = JSON.parse(cod);
+        var _vnpay = JSON.parse(vnpay);
+        console.log(vnpay);
+        console.log(cod);
+      
         var userChart = new Chart(userCtx, {
             type: 'bar',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 datasets: [{
                     label: 'VNPay',
-                    data: [12, 19, 3, 5, 2, 3],
+                    data: [_vnpay[0], _vnpay[1], _vnpay[2], _vnpay[3], _vnpay[4], _vnpay[5], _vnpay[6], _vnpay[7], _vnpay[8], _vnpay[9], _vnpay[10], _vnpay[11]],
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
                 }, {
                     label: 'Thanh Toán khi nhận hàng',
-                    data: [12, 19, 3, 5, 2, 3],
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderColor: 'rgba(75, 192, 192, 1)',
+                    data: [_cod[0], _cod[1], _cod[2], _cod[3], _cod[4], _cod[5], _cod[6], _cod[7], _cod[8], _cod[9], _cod[10], _cod[11]],
+                    backgroundColor: 'rgb(250, 81, 48)',
+                    borderColor: 'rgb(250, 81, 48)',
                     borderWidth: 1
                 }]
             },
@@ -140,17 +142,29 @@
             }
         });
 
+
         // Activity Overview Chart
         var activityCtx = document.getElementById('activityChart').getContext('2d');
+        var complete = document.getElementById('Complete').value;
+        var pending = document.getElementById('Pending').value;
+        var _complete = JSON.parse(complete);
+        var _pending = JSON.parse(pending);
+
         var activityChart = new Chart(activityCtx, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
                 datasets: [{
-                    label: 'Order Completions',
-                    data: [65, 59, 80, 81, 56, 55],
+                    label: 'Complete',
+                    data: [_complete[0], _complete[1], _complete[2], _complete[3], _complete[4], _complete[5], _complete[6], _complete[7], _complete[8], _complete[9], _complete[10], _complete[11]],
                     fill: false,
-                    borderColor: 'rgb(75, 192, 192)',
+                    borderColor: 'rgb(154, 230, 154)',
+                    tension: 0.1
+                }, {
+                    label: 'Pending',
+                    data: [_pending[0], _pending[1], _pending[2], _pending[3], _pending[4], _pending[5], _pending[6], _pending[7], _pending[8], _pending[9], _pending[10], _pending[11]],
+                    fill: false,
+                    borderColor: 'rgb(255, 0, 0)',
                     tension: 0.1
                 }]
             },
@@ -162,5 +176,6 @@
                 }
             }
         });
+
     </script>
 }

@@ -94,5 +94,9 @@ namespace PRN221_MeVaBe_Repo.Repositories
             int count = (int)Math.Ceiling((double)entities.Count() / pageSize); ;
             return count;
         }
+        public IQueryable<T> AsQueryable()
+        {
+            return _dbContext.Set<T>().AsQueryable();
+        }
     }
 }
