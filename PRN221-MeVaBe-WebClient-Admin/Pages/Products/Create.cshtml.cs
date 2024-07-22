@@ -12,7 +12,7 @@ using PRN221_MeVaBe_Repo.Models;
 
 namespace PRN221_MeVaBe_Repo.Pages.Products
 {
-    public class EditModel : PageModel
+    public class CreateModel : PageModel
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -22,18 +22,14 @@ namespace PRN221_MeVaBe_Repo.Pages.Products
         [BindProperty]
         public IFormFile CoverImageFile { get; set; }
 
-        public EditModel(IUnitOfWork unitOfWork)
+        public CreateModel(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public IActionResult OnGet(int id)
+        public IActionResult OnGet()
         {
-            Product = _unitOfWork.ProductRepository.GetByID(id);
-            if (Product == null)
-            {
-                return NotFound();
-            }
+            Product = new Product();
             ViewData["Id"] = new SelectList(_unitOfWork.ProductCategoryRepository.Get(), "Id", "Name");
             return Page();
         }
@@ -46,6 +42,7 @@ namespace PRN221_MeVaBe_Repo.Pages.Products
                 return Page();
             }
 
+            // Handle file upload
             if (CoverImageFile != null)
             {
                 var fileName = Path.GetFileName(CoverImageFile.FileName);
@@ -59,7 +56,11 @@ namespace PRN221_MeVaBe_Repo.Pages.Products
                 Product.CoverImage = "/uploads/" + fileName;
             }
 
-            _unitOfWork.ProductRepository.Update(Product);
+            var productList = _unitOfWork.ProductRepository.Get().ToList();
+            Product.Id = productList.Any() ? productList.Max(p => p.Id) + 1 : 1;
+            Product.Status = true;
+
+            _unitOfWork.ProductRepository.Insert(Product);
             _unitOfWork.Save();
 
             return RedirectToPage("./Index");

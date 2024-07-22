@@ -33,19 +33,19 @@ namespace PRN221_MeVaBe_Repo.Pages.Products
                 pageIndexMax = (int)Math.Ceiling((double)unitOfWork.ProductRepository.Get().Count() / 4);
                 Product = (IList<Product>)unitOfWork.ProductRepository.Get(orderBy: l => l.OrderByDescending(e => e.Id), includeProperties: "ProductCategory", pageIndex: pageIndex, pageSize: 5);
             }
-            //if(textSearch1 == null && textSearch2==null &&textSearch!=null)
-            //{
-            //    if (decimal.TryParse(textSearch, out decimal decimalValue))
-            //    {
-            //        Product = (IList<Product>)unitOfWork.ProductRepository.Get(p => p. == decimalValue, orderBy: l => l.OrderByDescending(e => e.EqId), includeProperties: "Room", pageIndex: pageIndex, pageSize: 5);
-            //    }
-            //    else
-            //    {
-            //        Product = (IList<Product>)unitOfWork.ProductRepository.Get(p => p.EqName.Contains(textSearch), orderBy: l => l.OrderByDescending(e => e.EqId), includeProperties: "Room", pageIndex: pageIndex, pageSize: 5);
-            //    }
-            //    pageIndexMax = (int)Math.Ceiling((double)Product.Count() / 4);
-            //}
-           
+            if (textSearch1 == null && textSearch2 == null && textSearch != null)
+            {
+                if (decimal.TryParse(textSearch, out decimal decimalValue))
+                {
+                    Product = (IList<Product>)unitOfWork.ProductRepository.Get(p => (decimal)p.Price == decimalValue, orderBy: l => l.OrderByDescending(e => e.Id), includeProperties: "ProductCategory", pageIndex: pageIndex, pageSize: 5);
+                }
+                else
+                {
+                    Product = (IList<Product>)unitOfWork.ProductRepository.Get(p => p.ProductName.Contains(textSearch), orderBy: l => l.OrderByDescending(e => e.Id), includeProperties: "ProductCategory", pageIndex: pageIndex, pageSize: 5);
+                }
+                pageIndexMax = (int)Math.Ceiling((double)Product.Count() / 4);
+            }
+
 
 
             return Page();
