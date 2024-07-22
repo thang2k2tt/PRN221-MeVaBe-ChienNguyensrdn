@@ -1,0 +1,263 @@
+﻿@page "/Feedbacks"
+@model PRN221_MeVaBe_WebClient_Adminn.Pages.Feedbacks.IndexModel
+
+@{
+    ViewData["Title"] = "Feedbacks";
+}
+<head>
+    <style>
+        .table {
+            border-collapse: collapse;
+            width: 95%;
+            position: absolute;
+            margin-top: 40px;
+        }
+
+            .table th {
+                border: 1px solid #2d3748;
+                padding: 10px;
+                text-align: center;
+            }
+
+            .table tbody tr {
+                height: 60px;
+            }
+
+            .table td {
+                border: 1px solid #fff;
+                padding: 8px;
+                text-align: left;
+                align-content: center;
+                font-size: 12px;
+            }
+
+                .table td:hover {
+                    border: 1px solid #f2f2f2;
+                }
+
+            .table tbody tr:hover {
+                background-color: #f2f2f2;
+            }
+
+            .table th {
+                background-color: #2d3748;
+                color: #fff;
+            }
+
+            .table tr:nth-child(even) {
+                background-color: #ffffff;
+            }
+
+        .star-rating {
+            color: gold;
+            font-size: 16px;
+        }
+
+        .dropdown-menu, .dropdown-menu-child {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 50px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 3;
+            left: 0;
+            right: auto;
+        }
+
+            .dropdown-menu a, .dropdown-menu-child a {
+                color: black;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+            }
+
+                .dropdown-menu a:hover {
+                    background-color: #f1f1f1;
+                }
+
+                .dropdown-menu-child a:hover {
+                    background-color: #f1f1f1;
+                }
+
+        dialog {
+            display: none;
+            background-color: #F4FFEF;
+            border: 1px dotted black;
+            width: 50%;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            z-index: 4
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid" style="max-width:1480px">
+        <div class="row">
+            <h1 class="mt-4 mb-4">Feedbacks</h1>
+            <div class="row">
+                <div class="table-responsive" style="max-width: 1400px; overflow-x: hidden; overflow-y: hidden;">
+                    <table class="table">
+                        <thead>
+                            <tr class="first">
+                                <th>Id</th>
+                                <th>Content</th>
+                                <th>Rate</th>
+                                <th>Create Date</th>
+                                <th>User Id</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var items in Model.Feedback)
+                            {
+                                <tr>
+                                    <td>@items.Id</td>
+                                    <td>@items.Content</td>
+                                    <td>
+                                        <div class="star-rating">
+                                            @for (int i = 0; i < 5; i++)
+                                            {
+                                                if (i < items.Rate)
+                                                {
+                                                    <span>&#9733;</span> @* Filled star *@
+                                                }
+                                                else
+                                                {
+                                                    <span>&#9734;</span> @* Empty star *@
+                                                }
+                                            }
+                                        </div>
+                                    </td>
+                                    <td>@items.CreateDate</td>
+                                    <td>@items.User.Fullname</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div>
+                        <dialog id="orderDetailsDialog" style="width:50%;height:100%;background-color:#F4FFEF;border:1px dotted black;">
+                            <button id="hide">x</button>
+                            <table class="table">
+                                <thead>
+                                    <tr class="first">
+                                        <th>Id</th>
+                                        <th>Product Name</th>
+                                        <th>Unit Price</th>
+                                        <th>Quantity</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="orderDetailList">
+                                </tbody>
+                            </table>
+                        </dialog>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        (function () {
+            var dialog = document.getElementById('orderDetailsDialog');
+            if (!dialog.showModal) {
+                dialogPolyfill.registerDialog(dialog);
+            }
+            document.getElementById('hide').onclick = function () {
+                dialog.style.display = 'none';
+                dialog.close();
+            };
+        })();
+    </script>
+    <script>
+        function toggleDropdown(element) {
+            var dropdownMenu = element.nextElementSibling;
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        window.onclick = function (event) {
+            if (!event.target.matches('.fas.fa-bars')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
+        }
+        function toggleDropdownChild(element) {
+            var dropdownMenu = element.nextElementSibling;
+            dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        window.onclick = function (event) {
+            if (!event.target.matches('.fas.fa-chevron-left')) {
+                var dropdowns = document.getElementsByClassName("dropdown-menu-child");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.style.display === 'block') {
+                        openDropdown.style.display = 'none';
+                    }
+                }
+            }
+        }
+        function getItem(orderDetailId) {
+            event.preventDefault();
+            const tbody = document.getElementById('orderDetailList');
+            let url = `/Orders/Index?handler=GetItems&orderDetailId=${orderDetailId}`;
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const myString = data.data.map((p) => {
+                            return `<tr >
+                                                            <td style="text-align:center">` + p.id + `</td>
+                                                            <td style="text-align:center">` + p.product.productName + `</td>
+                                                            <td style="text-align:center">` + p.price + `</td>
+                                                            <td style="text-align:center">` + p.quantity + `</td>
+                                                </tr>`
+                        }).join("")
+                        tbody.innerHTML = myString;
+                        var dialog = document.getElementById('orderDetailsDialog');
+                        if (!dialog.showModal) {
+                            dialogPolyfill.registerDialog(dialog);
+                        }
+                        dialog.style.display = 'block';
+                        dialog.showModal();
+                    } else {
+                        alert('Failed to add product to cart');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('An error occurred while adding the product to cart');
+                });
+        }
+        function UpdateStatus(orderDetailsId, status) {
+            event.preventDefault();
+            let url = `/Orders/Index?handler=UpdateStatus&orderDetailId=${orderDetailsId}&status=${status}`;
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.reload();
+                    } else {
+                        alert('Failed to add product to cart');
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('An error occurred while adding the product to cart');
+                });
+        }
+    </script>
+</body>
