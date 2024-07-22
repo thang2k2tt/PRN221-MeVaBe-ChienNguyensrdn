@@ -29,8 +29,13 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["Page"].ToString() == "/Product" ? "active" : "")" asp-page="/About">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Page"].ToString() == "/Products/Index" ? "active" : "")" asp-page="/Products/Index">
                                 <i class="fas fa-box-open"></i> <span>Products</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Page"].ToString() == "/Category/Index" ? "active" : "")" asp-page="/Category/Index">
+                                <i class="fas fa-layer-group"></i> <span>Category</span>
                             </a>
                         </li>
                         <li class="nav-item">
@@ -39,15 +44,9 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["Page"].ToString() == "/Feedback" ? "active" : "")" asp-page="/Contact">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Page"].ToString() == "/Feedbacks/Index" ? "active" : "")" asp-page="/Feedback/Index">
                                 <i class="fas fa-comments"></i> <span>Feedbacks</span>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">product</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Category/Index">category</a>
                         </li>
                     </ul>
                 </div>
