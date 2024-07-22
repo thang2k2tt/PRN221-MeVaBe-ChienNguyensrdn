@@ -9,6 +9,9 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <!-- Include Font Awesome CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+   @*  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.5.6/dialog-polyfill.min.css" integrity="sha512-HZ0kt8MhFXB8OCL4Bke0ewhK2l4YolTeqI6HMPkjVb8vQlV0fyLPjY6Ni50qKZ6k3VHRRG63Z8QWubpOdzLwtQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+     *@<script src="https://cdnjs.cloudflare.com/ajax/libs/dialog-polyfill/0.5.6/dialog-polyfill.min.js" integrity="sha512-tQhP9E1zrctCcyMwh72UjVb1bw2fNjXefSkP+6DYY0RE4i+g6KkpSMzBv41wCaxic/bY5wzjzHcC3NwLZHx3gg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <!-- Datatable -->
 </head>
 <body>
     <div class="container-fluid">
@@ -31,7 +34,7 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link @(ViewContext.RouteData.Values["Page"].ToString() == "/Order" ? "active" : "")" asp-page="/Contact">
+                            <a class="nav-link @(ViewContext.RouteData.Values["Page"].ToString() == "/Orders/Index" ? "active" : "")" asp-page="/Orders/Index">
                                 <i class="fas fa-shopping-cart"></i> <span>Orders</span>
                             </a>
                         </li>
