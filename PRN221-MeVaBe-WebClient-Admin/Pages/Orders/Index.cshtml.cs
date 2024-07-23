@@ -24,7 +24,7 @@ namespace PRN221_MeVaBe_WebClient_Adminn.Pages.Orders
 
         public async Task OnGetAsync()
         {
-            OrderDetail = (IList<OrderDetail>)unitOfWork.OrderDetailRepository.Get(includeProperties: "User");
+            OrderDetail = (IList<OrderDetail>)unitOfWork.OrderDetailRepository.Get( orderBy: l => l.OrderByDescending(e => e.Id),includeProperties: "User");
         }
 
         public JsonResult OnPostGetItems(int orderDetailId)
